@@ -3,7 +3,9 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
 from src.chunks import split_text
 from src.embeds import create_embedding
-from src.chromaDBService import add_documents
+from src.chromaDBService import add_documents, search_documents
+from src.llmService import ask_llm
+from src.models import ChatRequest
 import logging
 
 app = FastAPI(title="RAG Fast API")
@@ -11,8 +13,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-@app.get("/chat")
-async def notChat():
+@app.get("/bootstrap")
+async def bootstrap():
     return "Success"
 
 
@@ -39,3 +41,16 @@ async def upload(file: UploadFile = File()):
         "message": "Document Uploaded Successfully",
         "number of chunks created": len(chunks),
     }
+
+
+@app.post("/chat")
+async def chat(request: ChatRequest):
+    question_embedding = create_embedding(request.question)
+    results = search_documents(question_embedding)
+    documents = results["documents"][0]
+
+    context = "\n\n".join(documents)
+
+    answer = ask_llm(request.question, context)
+
+    return {"question": request.question, "answer": answer, "documents": documents}
