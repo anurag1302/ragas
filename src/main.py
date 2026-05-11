@@ -1,8 +1,9 @@
 import json
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
 from src.chunks import split_text
+from src.embeds import create_embedding
+from src.chromaDBService import add_documents
 import logging
 
 app = FastAPI(title="RAG Fast API")
@@ -17,9 +18,24 @@ async def notChat():
 
 @app.post("/upload")
 async def upload(file: UploadFile = File()):
-    content = await file.read()
+    file_path = f"uploads/{file.filename}"
+    with open(file_path, "wb") as f:
+        content = await file.read()
+        f.write(content)
+
     text = content.decode("utf-8")
-    logger.info(f"File name:{file.filename}, File size:{len(content)}")
-    logger.info(f"File content:{text[:400]}")
-    split_text(text, chunk_size=500, overlap=100)
-    return "Success"
+    # logger.info(f"File name:{file.filename}, File size:{len(content)}")
+    # logger.info(f"File content:{text[:400]}")
+    chunks = split_text(text, chunk_size=1000, overlap=200)
+
+    embeddings = []
+    for chunk in chunks:
+        embedding = create_embedding(chunk)
+        embeddings.append(embedding)
+
+    add_documents(chunks, embeddings)
+
+    return {
+        "message": "Document Uploaded Successfully",
+        "number of chunks created": len(chunks),
+    }
