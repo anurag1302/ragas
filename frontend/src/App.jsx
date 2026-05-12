@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import "./App.css";
 
 function App() {
@@ -17,6 +18,11 @@ function App() {
       setLoading(true);
       console.log(file);
       console.log(formData);
+      const response = await axios.post(
+        "http://localhost:8000/upload",
+        formData,
+      );
+      alert(response.data);
     } catch (error) {
       console.log(error);
       alert("Upload Failed");
