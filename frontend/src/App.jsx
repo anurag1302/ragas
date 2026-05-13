@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
 import "./App.css";
 
 function App() {
@@ -71,6 +72,17 @@ function App() {
         style={{ width: 400 }}
       />
       <button onClick={askQuestion}>Ask</button>
+      {loading && <p>Loading...</p>}
+      <h2>Chat</h2>
+      {messages.map((message, index) => (
+        <div
+          key={index}
+          style={{ marginBottom: 20, padding: 10, border: "1px solid gray" }}
+        >
+          <h3>{message.role}</h3>
+          <ReactMarkdown>{message.content}</ReactMarkdown>
+        </div>
+      ))}
     </>
   );
 }
