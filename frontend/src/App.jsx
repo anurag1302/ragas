@@ -22,10 +22,26 @@ function App() {
         "http://localhost:8000/upload",
         formData,
       );
-      alert(response.data);
+      alert(response.data.message);
     } catch (error) {
       console.log(error);
       alert("Upload Failed");
+    }
+    setLoading(false);
+  };
+
+  const askQuestion = async () => {
+    if (!question) {
+      return;
+    }
+    try {
+      setLoading(true);
+      let data = { question: question };
+      const response = await axios.post("http://localhost:8000/chat", data);
+      console.log(response.data.answer);
+    } catch (error) {
+      console.log(error);
+      alert("Chat failed");
     }
     setLoading(false);
   };
@@ -43,6 +59,7 @@ function App() {
         onChange={(e) => setQuestion(e.target.value)}
         style={{ width: 400 }}
       />
+      <button onClick={askQuestion}>Ask</button>
     </>
   );
 }
