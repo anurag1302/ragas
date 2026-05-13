@@ -6,6 +6,7 @@ function App() {
   const [question, setQuestion] = useState("");
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState([]);
 
   const uploadFile = async () => {
     if (!file) {
@@ -39,6 +40,16 @@ function App() {
       let data = { question: question };
       const response = await axios.post("http://localhost:8000/chat", data);
       console.log(response.data.answer);
+
+      const userMessage = {
+        role: "user",
+        content: question,
+      };
+      const assistantMessage = {
+        role: "assistant",
+        content: response.data.answer,
+      };
+      setMessages((previous) => [...previous, userMessage, assistantMessage]);
     } catch (error) {
       console.log(error);
       alert("Chat failed");
