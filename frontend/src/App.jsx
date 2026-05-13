@@ -36,6 +36,13 @@ function App() {
       <h2>Upload text file</h2>
       <input type="file" onChange={(e) => setFile(e.target.files[0])} />
       <button onClick={uploadFile}>Upload</button>
+      <h2>Ask Question</h2>
+      <input
+        type="text"
+        value={question}
+        onChange={(e) => setQuestion(e.target.value)}
+        style={{ width: 400 }}
+      />
     </>
   );
 }
