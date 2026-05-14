@@ -6,12 +6,14 @@ client = chromadb.PersistentClient(path="chroma_db")
 collection = client.get_or_create_collection(name="documents")
 
 
-def add_documents(chunks, embeddings):
+def add_documents(chunks, embeddings, metadatas):
     ids = []
     for _ in chunks:
         ids.append(str(uuid.uuid4()))
 
-    collection.add(embeddings=embeddings, documents=chunks, ids=ids)
+    collection.add(
+        embeddings=embeddings, documents=chunks, metadatas=metadatas, ids=ids
+    )
 
 
 def search_documents(query_embedding, top_k=3):

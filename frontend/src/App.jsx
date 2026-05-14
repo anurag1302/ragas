@@ -79,7 +79,7 @@ function App() {
         <div>
           <h1 className="logo">RAG AI</h1>
 
-          <p className="subtitle">Upload TXT files and chat with them.</p>
+          <p className="subtitle">Upload files and chat with them.</p>
         </div>
 
         <div className="upload-section">

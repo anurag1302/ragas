@@ -44,11 +44,13 @@ async def upload(file: UploadFile = File()):
     chunks = split_text(text, chunk_size=1000, overlap=200)
 
     embeddings = []
-    for chunk in chunks:
+    metadatas = []
+    for index, chunk in chunks:
         embedding = create_embedding(chunk)
         embeddings.append(embedding)
+        metadatas.append({"file_name": file.filename, "chunk_id": index, "text": chunk})
 
-    add_documents(chunks, embeddings)
+    add_documents(chunks, embeddings, metadatas)
 
     return {
         "message": "Document Uploaded Successfully",
