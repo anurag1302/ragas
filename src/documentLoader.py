@@ -7,6 +7,16 @@ def extract_text_from_md_txt(file_path):
         return file.read()
 
 
+def extract_text_from_pdf(file_path):
+    document = fitz.open(file_path)
+    text = ""
+    for page in document:
+        text = text + page.get_text()
+    return text
+
+
 def extract_text(file_path, extension):
     if extension == ".txt" or extension == ".md":
         return extract_text_from_md_txt(file_path)
+    elif extension == ".pdf":
+        return extract_text_from_pdf(file_path)
