@@ -138,15 +138,15 @@ function App() {
             <p>No sources yet</p>
           ) : (
             sources.map((s, i) => (
-              <div key={i} className="source-card">
-                <div className="source-file">📄 {s.file_name}</div>
+              <details key={i} className="source-accordion">
+                <summary className="source-summary">
+                  📄 {s.file_name} — Chunk #{s.chunk_id}
+                </summary>
 
-                <div className="source-text">
-                  {s?.text?.slice(0, 200) || "No preview available"}
+                <div className="source-content">
+                  {s?.text || "No preview available"}
                 </div>
-
-                <div className="source-meta">Chunk #{s.chunk_id}</div>
-              </div>
+              </details>
             ))
           )}
         </div>
