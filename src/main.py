@@ -45,7 +45,7 @@ async def upload(file: UploadFile = File()):
 
     embeddings = []
     metadatas = []
-    for index, chunk in chunks:
+    for index, chunk in enumerate(chunks):
         embedding = create_embedding(chunk)
         embeddings.append(embedding)
         metadatas.append({"file_name": file.filename, "chunk_id": index, "text": chunk})
@@ -68,7 +68,7 @@ async def chat(request: ChatRequest):
     context = "\n\n".join(documents)
 
     sources = []
-    for document, metadata in zip(document, metadatas):
+    for document, metadata in zip(documents, metadatas):
         sources.append(
             {
                 "text": document,

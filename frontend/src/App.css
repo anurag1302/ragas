@@ -201,3 +201,33 @@ pre {
 code {
   font-family: monospace;
 }
+.sources-panel {
+  margin-top: 20px;
+  padding: 20px;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+}
+
+.source-card {
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.source-file {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.source-text {
+  font-size: 13px;
+  color: #374151;
+}
+
+.source-meta {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 5px;
+}

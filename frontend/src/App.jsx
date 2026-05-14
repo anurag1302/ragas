@@ -10,6 +10,7 @@ function App() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [sources, setSources] = useState([]);
 
   const uploadFile = async () => {
     if (!file) {
@@ -62,6 +63,7 @@ function App() {
       };
 
       setMessages((previous) => [...previous, assistantMessage]);
+      setSources((previous) => [...previous, ...response.data.sources]);
 
       setQuestion("");
     } catch (error) {
@@ -128,6 +130,25 @@ function App() {
           ))}
 
           {loading && <div className="loading-box">Thinking...</div>}
+        </div>
+        <div className="sources-panel">
+          <h3>Sources</h3>
+
+          {sources.length === 0 ? (
+            <p>No sources yet</p>
+          ) : (
+            sources.map((s, i) => (
+              <div key={i} className="source-card">
+                <div className="source-file">📄 {s.file_name}</div>
+
+                <div className="source-text">
+                  {s?.text?.slice(0, 200) || "No preview available"}
+                </div>
+
+                <div className="source-meta">Chunk #{s.chunk_id}</div>
+              </div>
+            ))
+          )}
         </div>
 
         {/* INPUT */}
