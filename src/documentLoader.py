@@ -15,8 +15,20 @@ def extract_text_from_pdf(file_path):
     return text
 
 
+def extract_text_from_docx(file_path):
+    document = Document(file_path)
+    text = ""
+    for paragraph in document.paragraphs:
+        text = text + paragraph.text + "\n"
+    return text
+
+
 def extract_text(file_path, extension):
     if extension == ".txt" or extension == ".md":
         return extract_text_from_md_txt(file_path)
     elif extension == ".pdf":
         return extract_text_from_pdf(file_path)
+    elif extension == ".docx":
+        return extract_text_from_docx(file_path)
+    else:
+        raise Exception("Unsupported file type")
