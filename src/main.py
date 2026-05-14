@@ -5,6 +5,8 @@ from src.chunks import split_text
 from src.embeds import create_embedding
 from src.chromaDBService import add_documents, search_documents
 from src.llmService import ask_llm
+from src.documentLoader import extract_text
+import os
 from src.models import ChatRequest
 import logging
 from fastapi.middleware.cors import CORSMiddleware
@@ -34,8 +36,9 @@ async def upload(file: UploadFile = File()):
     with open(file_path, "wb") as f:
         content = await file.read()
         f.write(content)
-
-    text = content.decode("utf-8")
+    _, extension = os.path.splitext(file.filename)
+    # text = content.decode("utf-8")
+    text = extract_text(file_path, extension)
     # logger.info(f"File name:{file.filename}, File size:{len(content)}")
     # logger.info(f"File content:{text[:400]}")
     chunks = split_text(text, chunk_size=1000, overlap=200)
