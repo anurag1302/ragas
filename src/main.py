@@ -63,9 +63,20 @@ async def chat(request: ChatRequest):
     question_embedding = create_embedding(request.question)
     results = search_documents(question_embedding)
     documents = results["documents"][0]
+    metadatas = results["metadatas"][0]
 
     context = "\n\n".join(documents)
 
+    sources = []
+    for document, metadata in zip(document, metadatas):
+        sources.append(
+            {
+                "text": document,
+                "file_name": metadata["file_name"],
+                "chunk_id": metadata["chunk_id"],
+            }
+        )
+
     answer = ask_llm(request.question, context)
 
-    return {"question": request.question, "answer": answer, "documents": documents}
+    return {"question": request.question, "answer": answer, "sources": sources}
