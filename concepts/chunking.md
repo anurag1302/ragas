@@ -23,3 +23,17 @@ It is a design choice about how you want meaning to be packaged. There is no uni
     - each section = one idea
     - citations matter
     - tables/figures are localized
+
+#### Legal documents
+
+- Structure
+  - clauses
+  - sub-clauses
+  - definitions
+  - references to other sections
+
+- Best chunking
+  - hierarchical + clause-aware chunking
+    - exact wording
+    - references ("see section 3.2")
+    - dependencies
